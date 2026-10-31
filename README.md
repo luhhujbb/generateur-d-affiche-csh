@@ -28,11 +28,29 @@ Sous WSL, si Windows n’atteint pas `localhost`, utiliser l’IP de la VM (ex. 
 
 ## Scripts
 
-| Commande        | Rôle                          |
-| --------------- | ----------------------------- |
-| `npm run dev`   | Serveur de développement      |
-| `npm run build` | Build de production           |
-| `npm run preview` | Prévisualiser le build      |
+| Commande                 | Rôle                                      |
+| ------------------------ | ----------------------------------------- |
+| `npm run dev`            | Serveur de développement                  |
+| `npm run build`          | Build à la racine (`/`)                   |
+| `npm run build:generator`| Build pour le sous-dossier `/generator/`  |
+| `npm run preview`        | Prévisualiser le build                    |
+
+## Déploiement dans un sous-dossier
+
+Si le site est servi sous un chemin (ex. `https://exemple.fr/generator/`), les assets doivent être préfixés. Deux options :
+
+```bash
+# Raccourci pour /generator/
+npm run build:generator
+
+# Autre chemin
+BASE_PATH=/mon-chemin npm run build
+
+# Ou via le flag Vite
+npm run build -- --base=/mon-chemin/
+```
+
+Le contenu de `dist/` se déploie ensuite dans ce sous-dossier sur le serveur.
 
 ## Stack
 

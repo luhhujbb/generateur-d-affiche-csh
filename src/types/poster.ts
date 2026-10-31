@@ -14,7 +14,8 @@ export interface PosterData {
   logo: string | null
 }
 
-export const DEFAULT_LOGO = '/logo-2026-2027.png'
+/** Respects Vite `base` (e.g. `/generator/`) when deployed in a subfolder */
+export const DEFAULT_LOGO = `${import.meta.env.BASE_URL}logo-2026-2027.png`
 
 export const DEFAULT_POSTER_DATA: PosterData = {
   authorName: '',

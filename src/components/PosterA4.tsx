@@ -91,9 +91,6 @@ function titleSizeClass(title: string): string {
 
 export function PosterA4({ data }: PosterA4Props) {
   const logoSrc = data.logo ?? DEFAULT_LOGO
-  const authorClass = data.authorPhotoUseAlpha
-    ? 'poster-author-photo--alpha'
-    : 'poster-author-photo--opaque'
   const authorBandClass = data.authorPhotoUseAlpha
     ? 'poster-author-band'
     : 'poster-author-band poster-author-band--opaque'
@@ -124,11 +121,20 @@ export function PosterA4({ data }: PosterA4Props) {
       >
         <div className="poster-author-band-overlay" />
         {data.authorPhoto ? (
-          <img
-            className={authorClass}
-            src={data.authorPhoto}
-            alt={data.authorName || 'Auteur'}
-          />
+          data.authorPhotoUseAlpha ? (
+            <img
+              className="poster-author-photo--alpha"
+              src={data.authorPhoto}
+              alt={data.authorName || 'Auteur'}
+            />
+          ) : (
+            <div className="poster-author-circle">
+              <img
+                src={data.authorPhoto}
+                alt={data.authorName || 'Auteur'}
+              />
+            </div>
+          )
         ) : (
           <div className="poster-author-placeholder">Photo auteur</div>
         )}
