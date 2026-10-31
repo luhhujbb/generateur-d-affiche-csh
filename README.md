@@ -1,32 +1,39 @@
-# React + TypeScript + Vite
+# Générateur d'affiche — Conférences Saint Honoré
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Application locale pour composer les affiches A4 des conférences du **Cercle Saint Honoré** : auteur, livre, titre, date et visuels, avec aperçu en direct et export PDF.
 
-Currently, two official plugins are available:
+## À quoi ça sert
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+À partir d’un formulaire, l’outil assemble une affiche au format portrait A4 fidèle à la charte (navy / or, logo 2026-2027) :
 
-## React Compiler
+- nom et photo de l’auteur (PNG avec transparence ou portrait circulaire)
+- image de fond de la bande auteur
+- titre (et sous-titre) de la conférence
+- couverture du livre
+- date, heure, lieu
+- pied de page avec liens et contacts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+L’aperçu se met à jour en direct. Le bouton **Exporter en PDF** ouvre l’impression du navigateur (format A4, sans marges).
 
-## Expanding the Oxlint configuration
+## Démarrer
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Ouvrir [http://localhost:5173/](http://localhost:5173/).
+
+Sous WSL, si Windows n’atteint pas `localhost`, utiliser l’IP de la VM (ex. `http://172.x.x.x:5173/`).
+
+## Scripts
+
+| Commande        | Rôle                          |
+| --------------- | ----------------------------- |
+| `npm run dev`   | Serveur de développement      |
+| `npm run build` | Build de production           |
+| `npm run preview` | Prévisualiser le build      |
+
+## Stack
+
+React 19 · TypeScript · Vite
