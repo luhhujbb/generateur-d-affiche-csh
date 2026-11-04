@@ -84,16 +84,123 @@ function SocialIcons() {
 
 function titleSizeClass(title: string): string {
   const len = title.trim().length
-  if (len > 48) return 'poster-conference-title poster-conference-title--xl'
-  if (len > 28) return 'poster-conference-title poster-conference-title--long'
+  if (len > 60) return 'poster-conference-title poster-conference-title--xl'
+  if (len > 40) return 'poster-conference-title poster-conference-title--long'
   return 'poster-conference-title'
+}
+
+function AuthorPhoto({
+  src,
+  alt,
+  useAlpha,
+  side,
+}: {
+  src: string | null
+  alt: string
+  useAlpha: boolean
+  side: 'left' | 'right' | 'single'
+}) {
+  if (!src) {
+    const placeholderClass =
+      side === 'left'
+        ? 'poster-author-placeholder poster-author-placeholder--left'
+        : side === 'right'
+          ? 'poster-author-placeholder poster-author-placeholder--right'
+          : 'poster-author-placeholder'
+    return <div className={placeholderClass}>Photo auteur</div>
+  }
+
+  if (useAlpha) {
+    const alphaClass =
+      side === 'left'
+        ? 'poster-author-photo--alpha poster-author-photo--alpha-left'
+        : side === 'right'
+          ? 'poster-author-photo--alpha poster-author-photo--alpha-right'
+          : 'poster-author-photo--alpha'
+    return <img className={alphaClass} src={src} alt={alt} />
+  }
+
+  const circleClass =
+    side === 'left'
+      ? 'poster-author-circle poster-author-circle--left'
+      : side === 'right'
+        ? 'poster-author-circle poster-author-circle--right'
+        : 'poster-author-circle'
+
+  return (
+    <div className={circleClass}>
+      <img src={src} alt={alt} />
+    </div>
+  )
+}
+
+function AuthorBand({ data }: { data: PosterData }) {
+  const duo = data.hasSecondAuthor
+  const useAlpha = data.authorPhotoUseAlpha
+
+  const bandClass = [
+    'poster-author-band',
+    !useAlpha ? 'poster-author-band--opaque' : '',
+    duo ? 'poster-author-band--duo' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return (
+    <section
+      className={bandClass}
+      style={
+        data.backgroundImage
+          ? { backgroundImage: `url(${data.backgroundImage})` }
+          : undefined
+      }
+    >
+      <div className="poster-author-band-overlay" />
+
+      {duo ? (
+        <>
+          <AuthorPhoto
+            src={data.authorPhoto}
+            alt={data.authorName || 'Auteur 1'}
+            useAlpha={useAlpha}
+            side="left"
+          />
+          <AuthorPhoto
+            src={data.secondAuthorPhoto}
+            alt={data.secondAuthorName || 'Auteur 2'}
+            useAlpha={useAlpha}
+            side="right"
+          />
+          {data.authorName ? (
+            <h2 className="poster-author-name poster-author-name--top">
+              {data.authorName}
+            </h2>
+          ) : null}
+          {data.secondAuthorName ? (
+            <h2 className="poster-author-name poster-author-name--bottom">
+              {data.secondAuthorName}
+            </h2>
+          ) : null}
+        </>
+      ) : (
+        <>
+          <AuthorPhoto
+            src={data.authorPhoto}
+            alt={data.authorName || 'Auteur'}
+            useAlpha={useAlpha}
+            side="single"
+          />
+          {data.authorName ? (
+            <h2 className="poster-author-name">{data.authorName}</h2>
+          ) : null}
+        </>
+      )}
+    </section>
+  )
 }
 
 export function PosterA4({ data }: PosterA4Props) {
   const logoSrc = data.logo ?? DEFAULT_LOGO
-  const authorBandClass = data.authorPhotoUseAlpha
-    ? 'poster-author-band'
-    : 'poster-author-band poster-author-band--opaque'
 
   return (
     <article className="poster-a4" aria-label="Aperçu de l'affiche A4">
@@ -111,37 +218,7 @@ export function PosterA4({ data }: PosterA4Props) {
         </div>
       </header>
 
-      <section
-        className={authorBandClass}
-        style={
-          data.backgroundImage
-            ? { backgroundImage: `url(${data.backgroundImage})` }
-            : undefined
-        }
-      >
-        <div className="poster-author-band-overlay" />
-        {data.authorPhoto ? (
-          data.authorPhotoUseAlpha ? (
-            <img
-              className="poster-author-photo--alpha"
-              src={data.authorPhoto}
-              alt={data.authorName || 'Auteur'}
-            />
-          ) : (
-            <div className="poster-author-circle">
-              <img
-                src={data.authorPhoto}
-                alt={data.authorName || 'Auteur'}
-              />
-            </div>
-          )
-        ) : (
-          <div className="poster-author-placeholder">Photo auteur</div>
-        )}
-        {data.authorName ? (
-          <h2 className="poster-author-name">{data.authorName}</h2>
-        ) : null}
-      </section>
+      <AuthorBand data={data} />
 
       <section className="poster-title-band">
         <div className="poster-title-block">

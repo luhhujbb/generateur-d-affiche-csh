@@ -84,9 +84,11 @@ export function PosterForm({ data, onChange, onExportPdf }: PosterFormProps) {
       </fieldset>
 
       <fieldset>
-        <legend>Auteur</legend>
+        <legend>Auteur{data.hasSecondAuthor ? 's' : ''}</legend>
         <div className="field">
-          <label htmlFor="authorName">Nom de l&apos;auteur</label>
+          <label htmlFor="authorName">
+            Nom de l&apos;auteur{data.hasSecondAuthor ? ' 1' : ''}
+          </label>
           <input
             id="authorName"
             type="text"
@@ -96,11 +98,57 @@ export function PosterForm({ data, onChange, onExportPdf }: PosterFormProps) {
           />
         </div>
         <ImageUpload
-          label="Photo de l'auteur (JPG / PNG)"
+          label={
+            data.hasSecondAuthor
+              ? "Photo de l'auteur 1 (JPG / PNG)"
+              : "Photo de l'auteur (JPG / PNG)"
+          }
           value={data.authorPhoto}
           onChange={(authorPhoto) => onChange({ authorPhoto })}
           hint="Préférez un PNG détouré pour un rendu sans fond."
         />
+        <div className="field checkbox-field">
+          <label>
+            <input
+              type="checkbox"
+              checked={data.hasSecondAuthor}
+              onChange={(e) => {
+                const hasSecondAuthor = e.target.checked
+                onChange(
+                  hasSecondAuthor
+                    ? { hasSecondAuthor }
+                    : {
+                        hasSecondAuthor,
+                        secondAuthorName: '',
+                        secondAuthorPhoto: null,
+                      },
+                )
+              }}
+            />
+            Ajouter un second auteur
+          </label>
+        </div>
+        {data.hasSecondAuthor ? (
+          <>
+            <div className="field">
+              <label htmlFor="secondAuthorName">Nom de l&apos;auteur 2</label>
+              <input
+                id="secondAuthorName"
+                type="text"
+                value={data.secondAuthorName}
+                onChange={(e) =>
+                  onChange({ secondAuthorName: e.target.value })
+                }
+                placeholder="NOM DU SECOND AUTEUR"
+              />
+            </div>
+            <ImageUpload
+              label="Photo de l'auteur 2 (JPG / PNG)"
+              value={data.secondAuthorPhoto}
+              onChange={(secondAuthorPhoto) => onChange({ secondAuthorPhoto })}
+            />
+          </>
+        ) : null}
         <div className="field checkbox-field">
           <label>
             <input
@@ -111,6 +159,7 @@ export function PosterForm({ data, onChange, onExportPdf }: PosterFormProps) {
               }
             />
             Utiliser le canal alpha (transparence PNG)
+            {data.hasSecondAuthor ? ' — pour les deux photos' : ''}
           </label>
         </div>
         <ImageUpload

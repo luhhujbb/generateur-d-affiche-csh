@@ -2,6 +2,9 @@ export interface PosterData {
   authorName: string
   authorPhoto: string | null
   authorPhotoUseAlpha: boolean
+  hasSecondAuthor: boolean
+  secondAuthorName: string
+  secondAuthorPhoto: string | null
   bookTitle: string
   bookCover: string | null
   conferenceTitle: string
@@ -21,6 +24,9 @@ export const DEFAULT_POSTER_DATA: PosterData = {
   authorName: '',
   authorPhoto: null,
   authorPhotoUseAlpha: true,
+  hasSecondAuthor: false,
+  secondAuthorName: '',
+  secondAuthorPhoto: null,
   bookTitle: '',
   bookCover: null,
   conferenceTitle: '',
